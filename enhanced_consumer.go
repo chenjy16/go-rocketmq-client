@@ -33,7 +33,7 @@ type PushConsumer struct {
 	consumeThreadMin    int32
 	consumeThreadMax    int32
 	// DLQ 模式：默认使用 Mock，必要时可切换到真实 Broker 交互
-	dlqMode             DLQMode
+	dlqMode DLQMode
 }
 
 // NewPushConsumer 创建Push消费者
@@ -166,7 +166,7 @@ func (pc *PushConsumer) pullAndConsumeMessages() {
 		subscriptions[topic] = sub
 	}
 	pc.Consumer.mutex.RUnlock()
-	
+
 	for topic := range subscriptions {
 		messages := pc.pullMessages(topic)
 		if len(messages) > 0 {
@@ -215,7 +215,7 @@ func (pc *PushConsumer) pullMessages(topic string) []*MessageExt {
 			}
 			return msgs
 		}
-		
+
 		// Mock DLQ 模式：返回包含DLQ属性的模拟消息
 		return []*MessageExt{
 			{
@@ -224,44 +224,44 @@ func (pc *PushConsumer) pullMessages(topic string) []*MessageExt {
 					Tags:  "TagA",
 					Body:  []byte(fmt.Sprintf("fail_message_auto_dlq - 原始业务失败消息 - %s - %d", topic, time.Now().Unix())),
 					Properties: map[string]string{
-						"ORIGIN_TOPIC":         "RetryTestTopic",
-						"ORIGIN_MSG_ID":        fmt.Sprintf("dlq_msg_%d", time.Now().UnixNano()),
-						"RETRY_TIMES":          "3",
-						"DLQ_ORIGIN_QUEUE_ID":  "0",
-						"DLQ_ORIGIN_BROKER":    "localhost:10911",
+						"ORIGIN_TOPIC":        "RetryTestTopic",
+						"ORIGIN_MSG_ID":       fmt.Sprintf("dlq_msg_%d", time.Now().UnixNano()),
+						"RETRY_TIMES":         "3",
+						"DLQ_ORIGIN_QUEUE_ID": "0",
+						"DLQ_ORIGIN_BROKER":   "localhost:10911",
 					},
 				},
-				MsgId:         fmt.Sprintf("dlq_msg_%d", time.Now().UnixNano()),
-				QueueId:       0,
-				StoreSize:     100,
-				QueueOffset:   time.Now().Unix(),
-				SysFlag:       0,
-				BornTimestamp: time.Now(),
+				MsgId:          fmt.Sprintf("dlq_msg_%d", time.Now().UnixNano()),
+				QueueId:        0,
+				StoreSize:      100,
+				QueueOffset:    time.Now().Unix(),
+				SysFlag:        0,
+				BornTimestamp:  time.Now(),
 				StoreTimestamp: time.Now(),
 				ReconsumeTimes: 3,
-				StoreHost:     "localhost:10911",
+				StoreHost:      "localhost:10911",
 			},
 		}
 	}
-	
+
 	// 普通消息，返回原有逻辑的模拟消息
 	return []*MessageExt{
 		{
 			Message: &Message{
-				Topic: topic,
-				Tags:  "TagA",
-				Body:  []byte(fmt.Sprintf("Push消息内容 - %s - %d", topic, time.Now().Unix())),
+				Topic:      topic,
+				Tags:       "TagA",
+				Body:       []byte(fmt.Sprintf("Push消息内容 - %s - %d", topic, time.Now().Unix())),
 				Properties: make(map[string]string), // 初始化空的Properties
 			},
-			MsgId:        fmt.Sprintf("msg_%d", time.Now().UnixNano()),
-			QueueId:      0,
-			StoreSize:    100,
-			QueueOffset:  time.Now().Unix(),
-			SysFlag:      0,
-			BornTimestamp: time.Now(),
+			MsgId:          fmt.Sprintf("msg_%d", time.Now().UnixNano()),
+			QueueId:        0,
+			StoreSize:      100,
+			QueueOffset:    time.Now().Unix(),
+			SysFlag:        0,
+			BornTimestamp:  time.Now(),
 			StoreTimestamp: time.Now(),
 			ReconsumeTimes: 0, // 新消息重试次数为0
-			StoreHost:     "localhost:10911",
+			StoreHost:      "localhost:10911",
 		},
 	}
 }
@@ -332,7 +332,7 @@ func (pc *PushConsumer) handleOrderlyRetry(queueId int32, msgs []*MessageExt) {
 		fmt.Printf("队列%d顺序消费失败，重试已禁用\n", queueId)
 		return
 	}
-	
+
 	// 在实际实现中，这里应该暂停该队列的消费一段时间
 	fmt.Printf("队列%d将暂停%v后重试\n", queueId, pc.retryPolicy.RetryInterval)
 	// 可以使用定时器来实现暂停逻辑
@@ -344,10 +344,10 @@ func (pc *PushConsumer) handleRetryMessage(msg *MessageExt) {
 		fmt.Printf("消息消费失败，重试已禁用: %s\n", msg.MsgId)
 		return
 	}
-	
+
 	// 增加重试次数
 	msg.ReconsumeTimes++
-	
+
 	if msg.ReconsumeTimes >= pc.retryPolicy.MaxRetryTimes {
 		fmt.Printf("消息重试次数超限，进入死信队列: %s (重试次数: %d)\n", msg.MsgId, msg.ReconsumeTimes)
 		// 根据模式选择：真实发送到DLQ或仅用于Mock演示
@@ -362,12 +362,11 @@ func (pc *PushConsumer) handleRetryMessage(msg *MessageExt) {
 		}
 		return
 	}
-	
+
 	fmt.Printf("消息消费失败，稍后重试: %s, 重试次数: %d\n", msg.MsgId, msg.ReconsumeTimes)
 	// 在实际实现中，这里应该将消息重新投递
 	// 这里暂时只是打印日志，但实际应该调用 retryMessages 方法
 }
-
 
 // PullConsumer Pull模式消费者
 type PullConsumer struct {
@@ -397,10 +396,10 @@ func (pc *PullConsumer) PullBlockIfNotFound(mq *MessageQueue, subExpression stri
 	if !pc.started {
 		return nil, fmt.Errorf("pull consumer not started")
 	}
-	
+
 	// 简化实现，实际应该通过网络协议从Broker拉取
 	messages := make([]*MessageExt, 0)
-	
+
 	// 模拟拉取到的消息
 	for i := int32(0); i < maxNums && i < 5; i++ {
 		msg := &MessageExt{
@@ -409,17 +408,17 @@ func (pc *PullConsumer) PullBlockIfNotFound(mq *MessageQueue, subExpression stri
 				Tags:  "TagA",
 				Body:  []byte(fmt.Sprintf("Pull消息内容 - %d", offset+int64(i))),
 			},
-			MsgId:        fmt.Sprintf("pull_msg_%d_%d", offset, i),
-			QueueId:      mq.QueueId,
-			StoreSize:    100,
-			QueueOffset:  offset + int64(i),
-			SysFlag:      0,
-			BornTimestamp: time.Now(),
+			MsgId:          fmt.Sprintf("pull_msg_%d_%d", offset, i),
+			QueueId:        mq.QueueId,
+			StoreSize:      100,
+			QueueOffset:    offset + int64(i),
+			SysFlag:        0,
+			BornTimestamp:  time.Now(),
 			StoreTimestamp: time.Now(),
 		}
 		messages = append(messages, msg)
 	}
-	
+
 	result := &PullResult{
 		PullStatus:      PullFound,
 		NextBeginOffset: offset + int64(len(messages)),
@@ -427,7 +426,7 @@ func (pc *PullConsumer) PullBlockIfNotFound(mq *MessageQueue, subExpression stri
 		MaxOffset:       1000,
 		MsgFoundList:    messages,
 	}
-	
+
 	return result, nil
 }
 
@@ -450,18 +449,18 @@ type SimpleConsumer struct {
 
 // RetryPolicy 重试策略
 type RetryPolicy struct {
-	MaxRetryTimes    int32         `json:"maxRetryTimes"`    // 最大重试次数
-	RetryDelayLevel  int32         `json:"retryDelayLevel"`  // 重试延时级别
-	RetryInterval    time.Duration `json:"retryInterval"`    // 重试间隔
-	EnableRetry      bool          `json:"enableRetry"`      // 是否启用重试
+	MaxRetryTimes   int32         `json:"maxRetryTimes"`   // 最大重试次数
+	RetryDelayLevel int32         `json:"retryDelayLevel"` // 重试延时级别
+	RetryInterval   time.Duration `json:"retryInterval"`   // 重试间隔
+	EnableRetry     bool          `json:"enableRetry"`     // 是否启用重试
 }
 
 // ConsumeProgress 消费进度
 type ConsumeProgress struct {
-	Topic       string `json:"topic"`       // 主题
-	QueueId     int32  `json:"queueId"`     // 队列ID
-	Offset      int64  `json:"offset"`      // 消费偏移量
-	UpdateTime  int64  `json:"updateTime"`  // 更新时间
+	Topic      string `json:"topic"`      // 主题
+	QueueId    int32  `json:"queueId"`    // 队列ID
+	Offset     int64  `json:"offset"`     // 消费偏移量
+	UpdateTime int64  `json:"updateTime"` // 更新时间
 }
 
 // NewSimpleConsumer 创建Simple消费者
@@ -704,18 +703,18 @@ func (mras *MachineRoomAllocateStrategy) getCurrentConsumerRoom(cid string) stri
 func (mras *MachineRoomAllocateStrategy) GetName() string { return "MachineRoomAllocate" }
 
 type RebalanceService struct {
-	consumer           *Consumer
-	rebalanceInterval  time.Duration
-	mutex              sync.RWMutex
-	lastRebalanceTime  time.Time
+	consumer          *Consumer
+	rebalanceInterval time.Duration
+	mutex             sync.RWMutex
+	lastRebalanceTime time.Time
 }
 
 func NewRebalanceService(consumer *Consumer) *RebalanceService {
 	return &RebalanceService{consumer: consumer, rebalanceInterval: 30 * time.Second}
 }
 
-func (rs *RebalanceService) Start()  {}
-func (rs *RebalanceService) Stop()   {}
+func (rs *RebalanceService) Start() {}
+func (rs *RebalanceService) Stop()  {}
 
 func (rs *RebalanceService) rebalanceLoop() {}
 
@@ -723,6 +722,8 @@ func (rs *RebalanceService) doRebalance() {}
 
 func (rs *RebalanceService) rebalanceTopic(topic string) {}
 
-func (rs *RebalanceService) getTopicMessageQueues(topic string) []*MessageQueue { return []*MessageQueue{} }
+func (rs *RebalanceService) getTopicMessageQueues(topic string) []*MessageQueue {
+	return []*MessageQueue{}
+}
 
 func (rs *RebalanceService) getConsumerGroupMembers() []string { return []string{} }

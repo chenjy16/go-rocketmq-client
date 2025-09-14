@@ -4,9 +4,9 @@ import "time"
 
 // TopicRouteData Topic路由数据
 type TopicRouteData struct {
-	OrderTopicConf string       `json:"orderTopicConf"`
-	QueueDatas     []*QueueData `json:"queueDatas"`
-	BrokerDatas    []*BrokerData `json:"brokerDatas"`
+	OrderTopicConf    string              `json:"orderTopicConf"`
+	QueueDatas        []*QueueData        `json:"queueDatas"`
+	BrokerDatas       []*BrokerData       `json:"brokerDatas"`
 	FilterServerTable map[string][]string `json:"filterServerTable"`
 }
 
@@ -21,9 +21,9 @@ type QueueData struct {
 
 // BrokerData Broker数据
 type BrokerData struct {
-	Cluster     string            `json:"cluster"`
-	BrokerName  string            `json:"brokerName"`
-	BrokerAddrs map[int64]string  `json:"brokerAddrs"`
+	Cluster     string           `json:"cluster"`
+	BrokerName  string           `json:"brokerName"`
+	BrokerAddrs map[int64]string `json:"brokerAddrs"`
 }
 
 // TopicConfig Topic配置
@@ -63,13 +63,13 @@ type SendMessageRequestHeader struct {
 	ReconsumeTimes        int32  `json:"reconsumeTimes"`
 	UnitMode              bool   `json:"unitMode"`
 	Batch                 bool   `json:"batch"`
-	
+
 	// ACL认证字段
-	AccessKey             string `json:"accessKey,omitempty"`
-	Signature             string `json:"signature,omitempty"`
-	Timestamp             int64  `json:"timestamp,omitempty"`
-	SignatureMethod       string `json:"signatureMethod,omitempty"`
-	SecurityToken         string `json:"securityToken,omitempty"` 
+	AccessKey       string `json:"accessKey,omitempty"`
+	Signature       string `json:"signature,omitempty"`
+	Timestamp       int64  `json:"timestamp,omitempty"`
+	SignatureMethod string `json:"signatureMethod,omitempty"`
+	SecurityToken   string `json:"securityToken,omitempty"`
 }
 
 // SendMessageResponseHeader 发送消息响应头
@@ -105,20 +105,20 @@ type PullMessageResponseHeader struct {
 // 请求码常量
 const (
 	// Producer相关
-	SEND_MESSAGE         = 10
-	SEND_MESSAGE_V2      = 310
-	SEND_BATCH_MESSAGE   = 320
-	
+	SEND_MESSAGE       = 10
+	SEND_MESSAGE_V2    = 310
+	SEND_BATCH_MESSAGE = 320
+
 	// Consumer相关
-	PULL_MESSAGE         = 11
-	QUERY_CONSUMER_OFFSET = 14
+	PULL_MESSAGE           = 11
+	QUERY_CONSUMER_OFFSET  = 14
 	UPDATE_CONSUMER_OFFSET = 15
-	
+
 	// NameServer相关
 	GET_ROUTEINTO_BY_TOPIC = 105
 	REGISTER_BROKER        = 103
 	UNREGISTER_BROKER      = 104
-	
+
 	// 心跳相关
 	HEART_BEAT = 34
 )
@@ -126,10 +126,10 @@ const (
 // 响应码常量
 const (
 	SUCCESS                    = 0
-	SYSTEM_ERROR              = 1
-	SYSTEM_BUSY               = 2
+	SYSTEM_ERROR               = 1
+	SYSTEM_BUSY                = 2
 	REQUEST_CODE_NOT_SUPPORTED = 3
-	TRANSACTION_FAILED        = 4
+	TRANSACTION_FAILED         = 4
 )
 
 // CreateRemotingCommand 创建远程命令

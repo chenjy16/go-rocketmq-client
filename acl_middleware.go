@@ -12,24 +12,24 @@ import (
 
 // ACLMiddleware ACL中间件
 type ACLMiddleware struct {
-	aclUtils        *ACLUtils
-	enabled         bool
-	configPath      string
-	hotReload       bool
-	config          *ACLConfig
-	mutex           sync.RWMutex
-	stopChan        chan struct{}
-	reloadInterval  time.Duration
+	aclUtils       *ACLUtils
+	enabled        bool
+	configPath     string
+	hotReload      bool
+	config         *ACLConfig
+	mutex          sync.RWMutex
+	stopChan       chan struct{}
+	reloadInterval time.Duration
 }
 
 // ACLConfig ACL配置结构
 type ACLConfig struct {
-	AccessKey       string `json:"accessKey"`
-	SecretKey       string `json:"secretKey"`
-	SecurityToken   string `json:"securityToken"`
-	SignatureMethod string `json:"signatureMethod"`
-	Enabled         bool   `json:"enabled"`
-	TimestampTolerance int64 `json:"timestampTolerance"` // 时间戳容忍度（毫秒）
+	AccessKey          string `json:"accessKey"`
+	SecretKey          string `json:"secretKey"`
+	SecurityToken      string `json:"securityToken"`
+	SignatureMethod    string `json:"signatureMethod"`
+	Enabled            bool   `json:"enabled"`
+	TimestampTolerance int64  `json:"timestampTolerance"` // 时间戳容忍度（毫秒）
 }
 
 // NewACLMiddleware 创建ACL中间件
@@ -41,10 +41,10 @@ func NewACLMiddleware(accessKey, secretKey string, signatureMethod ACLSignatureM
 		stopChan:       make(chan struct{}),
 		reloadInterval: 30 * time.Second, // 默认30秒检查一次配置文件
 		config: &ACLConfig{
-			AccessKey:       accessKey,
-			SecretKey:       secretKey,
-			SignatureMethod: string(signatureMethod),
-			Enabled:         enabled,
+			AccessKey:          accessKey,
+			SecretKey:          secretKey,
+			SignatureMethod:    string(signatureMethod),
+			Enabled:            enabled,
 			TimestampTolerance: 300000, // 默认5分钟
 		},
 	}
@@ -266,11 +266,11 @@ func (acl *ACLMiddleware) GetConfig() *ACLConfig {
 	}
 	// 返回配置副本，隐藏敏感信息
 	return &ACLConfig{
-		AccessKey:       acl.config.AccessKey,
-		SecretKey:       "***", // 隐藏密钥
-		SecurityToken:   "***", // 隐藏令牌
-		SignatureMethod: acl.config.SignatureMethod,
-		Enabled:         acl.config.Enabled,
+		AccessKey:          acl.config.AccessKey,
+		SecretKey:          "***", // 隐藏密钥
+		SecurityToken:      "***", // 隐藏令牌
+		SignatureMethod:    acl.config.SignatureMethod,
+		Enabled:            acl.config.Enabled,
 		TimestampTolerance: acl.config.TimestampTolerance,
 	}
 }

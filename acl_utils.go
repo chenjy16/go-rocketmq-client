@@ -117,7 +117,7 @@ func (acl *ACLUtils) hmacSHA256Sign(data string) (string, error) {
 // BuildRequestData 构建请求数据用于签名
 func (acl *ACLUtils) BuildRequestData(topic, consumerGroup, msgId string, timestamp int64) map[string]string {
 	requestData := make(map[string]string)
-	
+
 	if topic != "" {
 		requestData["topic"] = topic
 	}
@@ -130,7 +130,7 @@ func (acl *ACLUtils) BuildRequestData(topic, consumerGroup, msgId string, timest
 	if timestamp > 0 {
 		requestData["timestamp"] = strconv.FormatInt(timestamp, 10)
 	}
-	
+
 	return requestData
 }
 
@@ -154,7 +154,7 @@ func IsTimestampValid(timestamp int64, toleranceMs int64) bool {
 	if toleranceMs <= 0 {
 		toleranceMs = 300000 // 默认5分钟容忍度
 	}
-	
+
 	currentTime := GenerateTimestamp()
 	return timestamp > 0 && (currentTime-timestamp) <= toleranceMs
 }

@@ -1,9 +1,9 @@
 package client
 
 import (
-	"testing"
 	"bytes"
 	"encoding/binary"
+	"testing"
 )
 
 // TestBatchMessageEncoding 测试批量消息编码功能

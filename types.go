@@ -7,38 +7,38 @@ import (
 
 // Message 消息结构体
 type Message struct {
-	Topic      string            `json:"topic"`       // 主题
-	Tags       string            `json:"tags"`        // 标签
-	Keys       string            `json:"keys"`        // 消息键
-	Body       []byte            `json:"body"`        // 消息体
-	Properties map[string]string `json:"properties"`  // 消息属性
-	
+	Topic      string            `json:"topic"`      // 主题
+	Tags       string            `json:"tags"`       // 标签
+	Keys       string            `json:"keys"`       // 消息键
+	Body       []byte            `json:"body"`       // 消息体
+	Properties map[string]string `json:"properties"` // 消息属性
+
 	// 延时消息相关
-	DelayTimeLevel    int32     `json:"delayTimeLevel,omitempty"`    // 延时级别 (1-18)
-	StartDeliverTime  int64     `json:"startDeliverTime,omitempty"`  // 开始投递时间戳(毫秒)
-	
+	DelayTimeLevel   int32 `json:"delayTimeLevel,omitempty"`   // 延时级别 (1-18)
+	StartDeliverTime int64 `json:"startDeliverTime,omitempty"` // 开始投递时间戳(毫秒)
+
 	// 事务消息相关
-	TransactionId     string    `json:"transactionId,omitempty"`     // 事务ID
-	
+	TransactionId string `json:"transactionId,omitempty"` // 事务ID
+
 	// 顺序消息相关
-	ShardingKey       string    `json:"shardingKey,omitempty"`       // 分片键，用于顺序消息
+	ShardingKey string `json:"shardingKey,omitempty"` // 分片键，用于顺序消息
 }
 
 // MessageExt 扩展消息结构体，包含系统属性
 type MessageExt struct {
 	*Message
-	MsgId                string    `json:"msgId"`                // 消息ID
-	QueueId              int32     `json:"queueId"`              // 队列ID
-	StoreSize            int32     `json:"storeSize"`            // 存储大小
-	QueueOffset          int64     `json:"queueOffset"`          // 队列偏移量
-	SysFlag              int32     `json:"sysFlag"`              // 系统标志
-	BornTimestamp        time.Time `json:"bornTimestamp"`        // 产生时间
-	BornHost             string    `json:"bornHost"`             // 产生主机
-	StoreTimestamp       time.Time `json:"storeTimestamp"`       // 存储时间
-	StoreHost            string    `json:"storeHost"`            // 存储主机
-	ReconsumeTimes       int32     `json:"reconsumeTimes"`       // 重试次数
-	PreparedTransaction  bool      `json:"preparedTransaction"`  // 是否为事务消息
-	CommitLogOffset      int64     `json:"commitLogOffset"`      // CommitLog偏移量
+	MsgId               string    `json:"msgId"`               // 消息ID
+	QueueId             int32     `json:"queueId"`             // 队列ID
+	StoreSize           int32     `json:"storeSize"`           // 存储大小
+	QueueOffset         int64     `json:"queueOffset"`         // 队列偏移量
+	SysFlag             int32     `json:"sysFlag"`             // 系统标志
+	BornTimestamp       time.Time `json:"bornTimestamp"`       // 产生时间
+	BornHost            string    `json:"bornHost"`            // 产生主机
+	StoreTimestamp      time.Time `json:"storeTimestamp"`      // 存储时间
+	StoreHost           string    `json:"storeHost"`           // 存储主机
+	ReconsumeTimes      int32     `json:"reconsumeTimes"`      // 重试次数
+	PreparedTransaction bool      `json:"preparedTransaction"` // 是否为事务消息
+	CommitLogOffset     int64     `json:"commitLogOffset"`     // CommitLog偏移量
 }
 
 // SendResult 发送结果
@@ -123,8 +123,8 @@ const (
 type MessageModel int32
 
 const (
-	Clustering  MessageModel = iota // 集群模式
-	Broadcasting                    // 广播模式
+	Clustering   MessageModel = iota // 集群模式
+	Broadcasting                     // 广播模式
 )
 
 // MessageType 消息类型
@@ -171,24 +171,24 @@ const (
 
 // 延时消息级别常量
 const (
-	DelayLevel1s   = 1  // 1秒
-	DelayLevel5s   = 2  // 5秒
-	DelayLevel10s  = 3  // 10秒
-	DelayLevel30s  = 4  // 30秒
-	DelayLevel1m   = 5  // 1分钟
-	DelayLevel2m   = 6  // 2分钟
-	DelayLevel3m   = 7  // 3分钟
-	DelayLevel4m   = 8  // 4分钟
-	DelayLevel5m   = 9  // 5分钟
-	DelayLevel6m   = 10 // 6分钟
-	DelayLevel7m   = 11 // 7分钟
-	DelayLevel8m   = 12 // 8分钟
-	DelayLevel9m   = 13 // 9分钟
-	DelayLevel10m  = 14 // 10分钟
-	DelayLevel20m  = 15 // 20分钟
-	DelayLevel30m  = 16 // 30分钟
-	DelayLevel1h   = 17 // 1小时
-	DelayLevel2h   = 18 // 2小时
+	DelayLevel1s  = 1  // 1秒
+	DelayLevel5s  = 2  // 5秒
+	DelayLevel10s = 3  // 10秒
+	DelayLevel30s = 4  // 30秒
+	DelayLevel1m  = 5  // 1分钟
+	DelayLevel2m  = 6  // 2分钟
+	DelayLevel3m  = 7  // 3分钟
+	DelayLevel4m  = 8  // 4分钟
+	DelayLevel5m  = 9  // 5分钟
+	DelayLevel6m  = 10 // 6分钟
+	DelayLevel7m  = 11 // 7分钟
+	DelayLevel8m  = 12 // 8分钟
+	DelayLevel9m  = 13 // 9分钟
+	DelayLevel10m = 14 // 10分钟
+	DelayLevel20m = 15 // 20分钟
+	DelayLevel30m = 16 // 30分钟
+	DelayLevel1h  = 17 // 1小时
+	DelayLevel2h  = 18 // 2小时
 )
 
 // TransactionListener 事务监听器接口
@@ -215,91 +215,91 @@ type SendCallback interface {
 
 // PullResult 拉取消息结果
 type PullResult struct {
-	PullStatus      PullStatus     `json:"pullStatus"`      // 拉取状态
-	NextBeginOffset int64          `json:"nextBeginOffset"` // 下次开始偏移量
-	MinOffset       int64          `json:"minOffset"`       // 最小偏移量
-	MaxOffset       int64          `json:"maxOffset"`       // 最大偏移量
-	MsgFoundList    []*MessageExt  `json:"msgFoundList"`    // 拉取到的消息列表
+	PullStatus      PullStatus    `json:"pullStatus"`      // 拉取状态
+	NextBeginOffset int64         `json:"nextBeginOffset"` // 下次开始偏移量
+	MinOffset       int64         `json:"minOffset"`       // 最小偏移量
+	MaxOffset       int64         `json:"maxOffset"`       // 最大偏移量
+	MsgFoundList    []*MessageExt `json:"msgFoundList"`    // 拉取到的消息列表
 }
 
 // PullStatus 拉取状态
 type PullStatus int32
 
 const (
-	PullFound             PullStatus = iota // 找到消息
-	PullNoNewMsg                            // 没有新消息
-	PullNoMatchedMsg                        // 没有匹配的消息
-	PullOffsetIllegal                       // 偏移量非法
-	PullBrokerTimeout                       // Broker超时
+	PullFound         PullStatus = iota // 找到消息
+	PullNoNewMsg                        // 没有新消息
+	PullNoMatchedMsg                    // 没有匹配的消息
+	PullOffsetIllegal                   // 偏移量非法
+	PullBrokerTimeout                   // Broker超时
 )
 
 // SubscriptionData 订阅数据
 type SubscriptionData struct {
-	Topic           string   `json:"topic"`           // 主题
-	SubString       string   `json:"subString"`       // 订阅表达式
-	TagsSet         []string `json:"tagsSet"`         // 标签集合
-	CodeSet         []int32  `json:"codeSet"`         // 代码集合
-	SubVersion      int64    `json:"subVersion"`      // 订阅版本
-	ClassFilterMode bool     `json:"classFilterMode"` // 类过滤模式
-	FilterClassSource string `json:"filterClassSource"` // 过滤类源码
-	ExpressionType  string   `json:"expressionType"`  // 表达式类型 (TAG/SQL92)
+	Topic             string   `json:"topic"`             // 主题
+	SubString         string   `json:"subString"`         // 订阅表达式
+	TagsSet           []string `json:"tagsSet"`           // 标签集合
+	CodeSet           []int32  `json:"codeSet"`           // 代码集合
+	SubVersion        int64    `json:"subVersion"`        // 订阅版本
+	ClassFilterMode   bool     `json:"classFilterMode"`   // 类过滤模式
+	FilterClassSource string   `json:"filterClassSource"` // 过滤类源码
+	ExpressionType    string   `json:"expressionType"`    // 表达式类型 (TAG/SQL92)
 }
 
 // FilterType 过滤器类型
 type FilterType string
 
 const (
-	FilterByTag  FilterType = "TAG"   // 标签过滤
-	FilterBySQL  FilterType = "SQL92" // SQL92表达式过滤
+	FilterByTag FilterType = "TAG"   // 标签过滤
+	FilterBySQL FilterType = "SQL92" // SQL92表达式过滤
 )
 
 // TraceType 追踪类型
 type TraceType int
 
 const (
-	TraceTypeProduce TraceType = iota // 生产者追踪
-	TraceTypeConsume                  // 消费者追踪
-	TraceTypeSubBefore               // 订阅前追踪
-	TraceTypeSubAfter                // 订阅后追踪
+	TraceTypeProduce   TraceType = iota // 生产者追踪
+	TraceTypeConsume                    // 消费者追踪
+	TraceTypeSubBefore                  // 订阅前追踪
+	TraceTypeSubAfter                   // 订阅后追踪
 )
 
 // TraceBean 追踪数据结构
 type TraceBean struct {
-	Topic         string            `json:"topic"`
-	MsgId         string            `json:"msgId"`
-	OffsetMsgId   string            `json:"offsetMsgId"`
-	Tags          string            `json:"tags"`
-	Keys          string            `json:"keys"`
-	StoreHost     string            `json:"storeHost"`
-	ClientHost    string            `json:"clientHost"`
-	StoreTime     int64             `json:"storeTime"`
-	RetryTimes    int               `json:"retryTimes"`
-	BodyLength    int               `json:"bodyLength"`
-	MsgType       MessageType       `json:"msgType"`
-	TraceType     TraceType         `json:"traceType"`
-	GroupName     string            `json:"groupName"`
-	CostTime      int64             `json:"costTime"`
-	Success       bool              `json:"success"`
-	RequestId     string            `json:"requestId"`
-	ContextCode   int               `json:"contextCode"`
-	TimeStamp     int64             `json:"timeStamp"`
-	InstanceName  string            `json:"instanceName"`
-	RegionId      string            `json:"regionId"`
-	Properties    map[string]string `json:"properties"`
+	Topic        string            `json:"topic"`
+	MsgId        string            `json:"msgId"`
+	OffsetMsgId  string            `json:"offsetMsgId"`
+	Tags         string            `json:"tags"`
+	Keys         string            `json:"keys"`
+	StoreHost    string            `json:"storeHost"`
+	ClientHost   string            `json:"clientHost"`
+	StoreTime    int64             `json:"storeTime"`
+	RetryTimes   int               `json:"retryTimes"`
+	BodyLength   int               `json:"bodyLength"`
+	MsgType      MessageType       `json:"msgType"`
+	TraceType    TraceType         `json:"traceType"`
+	GroupName    string            `json:"groupName"`
+	CostTime     int64             `json:"costTime"`
+	Success      bool              `json:"success"`
+	RequestId    string            `json:"requestId"`
+	ContextCode  int               `json:"contextCode"`
+	TimeStamp    int64             `json:"timeStamp"`
+	InstanceName string            `json:"instanceName"`
+	RegionId     string            `json:"regionId"`
+	Properties   map[string]string `json:"properties"`
 }
 
 // TraceContext 追踪上下文
 type TraceContext struct {
-	TraceType    TraceType    `json:"traceType"`
-	TimeStamp    int64        `json:"timeStamp"`
-	RegionId     string       `json:"regionId"`
-	RegionName   string       `json:"regionName"`
-	GroupName    string       `json:"groupName"`
-	CostTime     int64        `json:"costTime"`
-	Success      bool         `json:"success"`
-	RequestId    string       `json:"requestId"`
-	ContextCode  int          `json:"contextCode"`
-	TraceBeans   []*TraceBean `json:"traceBeans"`
+	TraceType   TraceType    `json:"traceType"`
+	TimeStamp   int64        `json:"timeStamp"`
+	RegionId    string       `json:"regionId"`
+	RegionName  string       `json:"regionName"`
+	GroupName   string       `json:"groupName"`
+	CostTime    int64        `json:"costTime"`
+	Success     bool         `json:"success"`
+	RequestId   string       `json:"requestId"`
+	ContextCode int          `json:"contextCode"`
+	TraceBeans  []*TraceBean `json:"traceBeans"`
 }
 
 // TraceHook 追踪钩子接口

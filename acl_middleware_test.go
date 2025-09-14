@@ -45,10 +45,10 @@ func TestNewACLMiddleware(t *testing.T) {
 func TestNewACLMiddlewareFromConfig(t *testing.T) {
 	// 创建临时配置文件
 	config := ACLConfig{
-		AccessKey:       "test_key",
-		SecretKey:       "test_secret",
-		SignatureMethod: "HmacSHA1",
-		Enabled:         true,
+		AccessKey:          "test_key",
+		SecretKey:          "test_secret",
+		SignatureMethod:    "HmacSHA1",
+		Enabled:            true,
 		TimestampTolerance: 300000,
 	}
 
